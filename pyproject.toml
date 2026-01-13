@@ -21,7 +21,7 @@ debate = [
     "google-genai>=1.36.0",
 ]
 tau2-agent = [
-    "litellm>=1.0.0",
+    "groq",
 ]
 tau2-evaluator = [
     "nest-asyncio>=1.6.0",
