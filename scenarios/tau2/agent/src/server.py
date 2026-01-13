@@ -32,7 +32,7 @@ def main():
     agent_card = AgentCard(
         name="benchpress_agent",
         description="Home controlling agent for benchpress evaluation",
-        url=args.card_url or f"http://{args.host}:{args.port}/",
+        url=args.card_url or f"http://{args.host}:{args.port}",
         version="1.0.0",
         default_input_modes=["text"],
         default_output_modes=["text"],
@@ -60,4 +60,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
