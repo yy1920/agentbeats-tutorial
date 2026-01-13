@@ -2,25 +2,28 @@ import json
 import os
 
 from dotenv import load_dotenv
-import litellm
 
 from a2a.server.tasks import TaskUpdater
 from a2a.types import DataPart, Message, Part, TaskState
 from a2a.utils import get_message_text, new_agent_text_message
 
 
+from groq import Groq
+
+
 load_dotenv()
 
 
 SYSTEM_PROMPT = (
-    "You are a helpful customer service agent. "
+    "You are a helpful home controlling agent to control smart appliances. "
     "Follow the policy and tool instructions provided in each message."
 )
 
 
 class Agent:
     def __init__(self):
-        self.model = os.getenv("TAU2_AGENT_LLM", "openai/gpt-4.1")
+        self.model = "llama-3.3-70b-versatile"
+        self.client = Groq()
         self.messages: list[dict[str, object]] = [{"role": "system", "content": SYSTEM_PROMPT}]
 
     async def run(self, message: Message, updater: TaskUpdater) -> None:
@@ -31,11 +34,12 @@ class Agent:
         self.messages.append({"role": "user", "content": input_text})
 
         try:
-            completion = litellm.completion(
+            completion = self.client.chat.completions.create(
                 model=self.model,
                 messages=self.messages,
                 temperature=0.0,
                 response_format={"type": "json_object"},
+                max_completion_tokens=1024,
             )
             assistant_content = completion.choices[0].message.content or "{}"
             assistant_json = json.loads(assistant_content)

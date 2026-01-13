@@ -15,26 +15,23 @@ from executor import Executor
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the tau2 agent (purple agent).")
+    parser = argparse.ArgumentParser(description="Run the benchpress agent (home controlling agent).")
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Host to bind the server")
     parser.add_argument("--port", type=int, default=9019, help="Port to bind the server")
     parser.add_argument("--card-url", type=str, help="URL to advertise in the agent card")
-    parser.add_argument("--agent-llm", type=str, default="openai/gpt-4.1", help="LLM model to use")
     args = parser.parse_args()
-
-    os.environ.setdefault("TAU2_AGENT_LLM", args.agent_llm)
 
     skill = AgentSkill(
         id="task_fulfillment",
         name="Task Fulfillment",
-        description="Solves customer service tasks for tau-bench evaluation",
-        tags=["benchmark", "tau2"],
+        description="Controls smart home appliances for benchpress evaluation",
+        tags=["benchmark", "benchpress"],
         examples=[],
     )
 
     agent_card = AgentCard(
-        name="tau2_agent",
-        description="Customer service agent for tau-bench evaluation",
+        name="benchpress_agent",
+        description="Home controlling agent for benchpress evaluation",
         url=args.card_url or f"http://{args.host}:{args.port}/",
         version="1.0.0",
         default_input_modes=["text"],
